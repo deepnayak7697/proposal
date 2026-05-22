@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>Will you marry me? 💖</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #ffe6f0 0%, #ffccdd 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+      padding: 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .floating-heart {
+      position: fixed;
+      font-size: 1.4rem;
+      opacity: 0.2;
+      pointer-events: none;
+      z-index: 0;
+      animation: floatHeart 12s infinite ease-in-out;
+      user-select: none;
+    }
+
+    @keyframes floatHeart {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      20% { opacity: 0.25; }
+      80% { opacity: 0.25; }
+      100% { transform: translateY(-20vh) rotate(20deg); opacity: 0; }
+    }
+
+    .card {
+      max-width: 520px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(2px);
+      border-radius: 56px;
+      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 215, 225, 0.6);
+      overflow: hidden;
+      transition: transform 0.2s ease;
+      z-index: 10;
+      position: relative;
+      padding: 2rem 1.8rem 2.2rem;
+    }
+
+    .proposal-section {
+      transition: opacity 0.25s ease;
+    }
+
+    .success-section {
+      text-align: center;
+      animation: fadeScale 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+
+    .hidden-section {
+      display: none;
+    }
+
+    .greeting {
+      font-size: 1.7rem;
+      font-weight: 600;
+      color: #b13e6b;
+      letter-spacing: -0.3px;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .message {
+      text-align: center;
+      color: #4a2c38;
+      font-size: 1.1rem;
+      margin: 0.8rem 0 0.5rem;
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    .big-question {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #c33c6e;
+      margin: 1rem 0 0.8rem;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #d43f7a, #b12b5e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .ring-emoji {
+      font-size: 2.8rem;
+      text-align: center;
+      margin: 0.2rem 0 0.4rem;
+      display: block;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.2rem;
+      margin: 1.8rem 0 1rem;
+    }
+
+    .btn {
+      border: none;
+      font-size: 1.4rem;
+      font-weight: 600;
+      padding: 0.9rem 2rem;
+      min-width: 130px;
+      border-radius: 60px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: white;
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+      font-family: inherit;
+      letter-spacing: 0.5px;
+      touch-action: manipulation;
+    }
+
+    .btn-yes {
+      background: #e56b8f;
+      color: white;
+      border: 1px solid #ffbfcf;
+    }
+
+    .btn-yes:active {
+      transform: scale(0.96);
+      background: #cf5a7e;
+    }
+
+    .btn-no {
+      background: #f5f0f2;
+      color: #a15773;
+      border: 1px solid #f7ceda;
+    }
+
+    .btn-no:active {
+      transform: scale(0.96);
+      background: #ffe3eb;
+    }
+
+    .message-area {
+      text-align: center;
+      margin-top: 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #c4517c;
+      min-height: 3rem;
+      padding: 0.2rem;
+    }
+
+    .funny-toast {
+      background: #fff0f5;
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: 40px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      font-size: 0.85rem;
+      font-weight: 500;
+      animation: fadeMsg 0.3s ease;
+    }
+
+    @keyframes fadeMsg {
+      0% { opacity: 0; transform: translateY(8px);}
+      100% { opacity: 1; transform: translateY(0);}
+    }
+
+    .success-title {
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: #c33c6e;
+      margin: 0.8rem 0 0.5rem;
+    }
+
+    .success-text {
+      font-size: 1.2rem;
+      color: #4a2c38;
+      margin: 0.8rem 0;
+    }
+
+    .big-ring {
+      font-size: 4rem;
+      margin: 0.6rem 0;
+      display: inline-block;
+      animation: pulseRing 1.2s infinite;
+    }
+
+    @keyframes pulseRing {
+      0% { transform: scale(1);}
+      50% { transform: scale(1.1);}
+      100% { transform: scale(1);}
+    }
+
+    .footer-note {
+      margin-top: 1.8rem;
+      font-size: 0.7rem;
+      color: #b27c8e;
+      text-align: center;
+      border-top: 1px solid #ffdfe8;
+      padding-top: 1rem;
+    }
+
+    @media (max-width: 480px) {
+      .card { padding: 1.6rem 1.2rem 1.8rem; }
+      .big-question { font-size: 1.9rem; }
+      .btn { font-size: 1.2rem; padding: 0.7rem 1.4rem; min-width: 110px; }
+      .success-title { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <div id="proposalSection" class="proposal-section">
+    <div class="greeting"><span>💌 My Love 💌</span></div>
+    <div class="ring-emoji">💍✨</div>
+    <div class="message">Every heartbeat whispers your name. You are my greatest adventure.</div>
+    <div class="big-question">Will you marry me?</div>
+    <div class="buttons" id="buttonsContainer">
+      <button class="btn btn-yes" id="yesBtn">💖 Yes 💖</button>
+      <button class="btn btn-no" id="noBtn">😅 No 😅</button>
+    </div>
+    <div id="messageArea" class="message-area"></div>
+    <div class="footer-note">💕 my heart belongs to you 💕</div>
+  </div>
+
+  <div id="successSection" class="success-section hidden-section">
+    <div class="big-ring">💍❤️💍</div>
+    <div class="success-title">YES! 💖</div>
+    <div class="success-text">You just made me the happiest person in the universe!<br>Forever starts now, my love. 🥂✨</div>
+    <div class="success-text">I can't wait to spend my whole life with you.</div>
+    <div class="ring-emoji" style="margin-top: 1rem;">💒👰‍♀️🤵‍♂️</div>
+    <div class="footer-note" style="margin-top: 2rem;">💘 with all my love, forever yours 💘</div>
+  </div>
+</div>
+
+<script>
+  // ==================== 🔁 REPLACE WITH YOUR EMAIL ====================
+  const YOUR_EMAIL = "RAJDEEPNAYAK92@GMAIL.COM";   // <-- CHANGE THIS
+  // ===================================================================
+
+  const proposalSection = document.getElementById('proposalSection');
+  const successSection = document.getElementById('successSection');
+  const yesBtn = document.getElementById('yesBtn');
+  let noBtn = document.getElementById('noBtn');
+  const messageArea = document.getElementById('messageArea');
+  const buttonsContainer = document.getElementById('buttonsContainer');
+
+  let accepted = false;
+  let noClickCount = 0;
+
+  const funnyMessages = [
+    "Hmm? Are you sure? 🥺 Think again!",
+    "You can't say no to true love! 💞",
+    "Oopsie! That button is just for decoration 😉",
+    "Nice try! But my heart says YES! 💘",
+    "No? I don't understand that word 💌",
+    "Please? For me? 🥹 Click YES instead!",
+    "Every 'no' brings us closer to 'YES' ✨",
+    "Love doesn't take NO for an answer! 😘"
+  ];
+
+  // Send email via FormSubmit
+  async function sendEmailNotification(answer) {
+    if (!YOUR_EMAIL || YOUR_EMAIL === "YOUR_EMAIL@EXAMPLE.COM") {
+      console.warn("Email not configured");
+      return;
+    }
+    const subject = answer === "yes" ? "💍 SHE SAID YES! 💍" : "😢 She said No...";
+    const messageText = answer === "yes" 
+      ? "Congratulations! Your love said YES to your proposal! 💖💖💖\n\nTime to celebrate!"
+      : "She clicked No. But maybe keep trying? 💔 The page will still try to convince her!";
+    
+    const formData = new FormData();
+    formData.append("email", YOUR_EMAIL);
+    formData.append("subject", subject);
+    formData.append("message", messageText);
+    formData.append("_captcha", "false");  // disable captcha for simplicity
+    formData.append("_template", "table");
+
+    try {
+      await fetch("https://formsubmit.co/ajax/" + YOUR_EMAIL, {
+        method: "POST",
+        body: formData
+      });
+      // No need to show anything to the user
+    } catch (err) {
+      console.error("Email error", err);
+    }
+  }
+
+  // Floating hearts background
+  function createFloatingHearts() {
+    const heartSymbols = ['❤️', '💖', '💗', '💓', '💕', '💞', '🌸', '💘'];
+    for (let i = 0; i < 25; i++) {
+      const heart = document.createElement('div');
+      heart.classList.add('floating-heart');
+      heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+      heart.style.fontSize = `${Math.random() * 1.5 + 0.8}rem`;
+      heart.style.left = `${Math.random() * 100}%`;
+      heart.style.animationDuration = `${Math.random() * 8 + 8}s`;
+      heart.style.animationDelay = `${Math.random() * 15}s`;
+      heart.style.opacity = Math.random() * 0.3 + 0.1;
+      document.body.appendChild(heart);
+    }
+  }
+  createFloatingHearts();
+
+  function showFunnyMessage(msg) {
+    if (accepted) return;
+    messageArea.innerHTML = `<div class="funny-toast">💬 ${msg} 💬</div>`;
+    setTimeout(() => {
+      if (!accepted && messageArea.innerHTML.includes(msg)) {
+        messageArea.innerHTML = '';
+      }
+    }, 2000);
+  }
+
+  function getRandomFunnyMsg() {
+    return funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
+  }
+
+  async function acceptProposal() {
+    if (accepted) return;
+    accepted = true;
+
+    // Send email notification (YES)
+    await sendEmailNotification("yes");
+
+    proposalSection.classList.add('hidden-section');
+    successSection.classList.remove('hidden-section');
+
+    canvasConfetti({ particleCount: 150, spread: 80, origin: { y: 0.6 }, startVelocity: 18, colors: ['#e56b8f', '#ff99bb', '#ffc2d1'] });
+    canvasConfetti({ particleCount: 100, spread: 120, origin: { y: 0.5, x: 0.2 }, startVelocity: 20 });
+    canvasConfetti({ particleCount: 100, spread: 120, origin: { y: 0.5, x: 0.8 }, startVelocity: 20 });
+    setTimeout(() => {
+      canvasConfetti({ particleCount: 300, spread: 100, origin: { y: 0.4 }, startVelocity: 25 });
+    }, 150);
+  }
+
+  function replaceNoWithYes() {
+    if (accepted) return;
+    if (!noBtn || !buttonsContainer.contains(noBtn)) return;
+
+    const newYesBtn = document.createElement('button');
+    newYesBtn.className = 'btn btn-yes';
+    newYesBtn.textContent = '💗 YES! (I give in) 💗';
+    newYesBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      acceptProposal();
+    });
+    buttonsContainer.replaceChild(newYesBtn, noBtn);
+    noBtn = newYesBtn;
+    showFunnyMessage("Okay okay! You win — there's no 'No' anymore! 💕 Just YES!");
+  }
+
+  async function onNoClick() {
+    if (accepted) return;
+    noClickCount++;
+
+    // Send email notification for "No"
+    await sendEmailNotification("no");
+
+    let msg = getRandomFunnyMsg();
+    showFunnyMessage(msg);
+
+    if (noClickCount === 3) {
+      replaceNoWithYes();
+      setTimeout(() => {
+        if (!accepted) {
+          const extraMsgDiv = document.getElementById('messageArea');
+          if (extraMsgDiv && !accepted) {
+            extraMsgDiv.innerHTML = `<div class="funny-toast">🎉 Looks like fate wants YES! Just click the new button 💖🎉</div>`;
+            setTimeout(() => {
+              if (!accepted && extraMsgDiv.innerHTML.includes('fate')) extraMsgDiv.innerHTML = '';
+            }, 3000);
+          }
+        }
+      }, 600);
+      return;
+    }
+
+    if (noBtn && document.body.contains(noBtn) && noBtn.classList.contains('btn-no')) {
+      noBtn.style.transform = 'scale(0.97)';
+      setTimeout(() => {
+        if (noBtn && !accepted) noBtn.style.transform = '';
+      }, 150);
+    }
+
+    if (noClickCount >= 5 && noClickCount < 8) {
+      showFunnyMessage("My love, your finger must be tired... just tap YES already! 😍");
+    }
+    if (noClickCount >= 8 && noBtn && noBtn.id === 'noBtn' && !accepted) {
+      replaceNoWithYes();
+      showFunnyMessage("You're so playful!! Now it's only a YES button forever 💘");
+    }
+  }
+
+  yesBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (!accepted) acceptProposal();
+  });
+
+  if (noBtn) {
+    noBtn.addEventListener('click', onNoClick);
+  }
+
+  // Optional pulse effect on Yes button
+  function addPulseToYes() {
+    const yes = document.getElementById('yesBtn');
+    if (yes && !accepted) {
+      setInterval(() => {
+        if (!accepted && yes && document.body.contains(yes)) {
+          yes.style.transform = 'scale(1.02)';
+          setTimeout(() => { if (yes && !accepted) yes.style.transform = ''; }, 300);
+        }
+      }, 2800);
+    }
+  }
+  addPulseToYes();
+
+  const styleHeartbeat = document.createElement('style');
+  styleHeartbeat.textContent = `
+    .btn-yes:hover { transform: scale(1.05); background: #dd648a; box-shadow: 0 12px 20px rgba(197, 72, 112, 0.3); }
+    .btn-no:hover { background: #ffe0e8; transform: scale(0.98); }
+    @media (max-width: 480px) { .btn-yes:active, .btn-no:active { transform: scale(0.96); } }
+  `;
+  document.head.appendChild(styleHeartbeat);
+</script>
+</body>
+</html>
